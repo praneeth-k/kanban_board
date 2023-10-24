@@ -1,12 +1,12 @@
-const express = require("express");
-const Login = require("./api/login.js");
-const Signin = require("./api/signin.js");
-const { ConnectToDB, IsDBConnected } = require("./dbConnection.js");
-const { StatusCodes } = require("http-status-codes");
+import express from 'express';
+import { StatusCodes } from 'http-status-codes';
+import Login from './api/login';
+import Signin from './api/signin';
+import { ConnectToDB, IsDBConnected } from './dbConnection';
 
 const app = express();
 app.use(express.json());
-app.use(function (req, res, next) {
+app.use((req, res, next) => {
   console.log(`Method: ${req.method}, Path: ${req.path}`);
   next();
 });
@@ -25,9 +25,9 @@ app.use((req, res, next) => {
   }
 });
 
-app.post("/connect_to_db", (req, res) => {
-  ConnectToDB(req, res);
-});
+app.post("/connect_to_db", function (req, res) {
+    ConnectToDB(req, res);
+  });
 
 app.post("/login", (req, res) => {
   Login(req, res);

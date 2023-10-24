@@ -1,9 +1,10 @@
-const { StatusCodes } = require("http-status-codes");
-const { getUserFromDB } = require("../util");
-const bcrypt = require("bcrypt");
-const crypto = require("crypto");
+import StatusCodes from "http-status-codes";
+import { getUserFromDB } from "../util";
+import bcrypt from 'bcrypt';
+import { Request, Response } from "express-serve-static-core";
+import { ParsedQs } from "qs";
 
-async function Login(req, res) {
+async function Login(req: Request<{}, any, any, ParsedQs, Record<string, any>>, res: Response<any, Record<string, any>, number>) {
   if (req.body.name && req.body.password) {
     const userFromDB = await getUserFromDB(req.body.name);
     if (userFromDB && userFromDB.name && userFromDB.password) {
@@ -23,9 +24,9 @@ async function Login(req, res) {
       res.send({ msg: "User Not Found" });
     }
   } else {
-    res.statusCode = StatusCodes.BAD_REQUEST; //Bad request
+    res.statusCode = StatusCodes.BAD_REQUEST;
     res.send({ msg: "Please send valid UserName/Password" });
   }
 }
 
-module.exports = Login;
+export default Login;

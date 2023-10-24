@@ -1,15 +1,20 @@
 {
   "name": "backend",
   "version": "1.0.0",
+  "compilerOptions": {
+    "module": "CommonJS"
+  },
   "description": "",
-  "main": "index.js",
+  "main": "index.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "ts-node --esm index.ts",
+    "dev": "nodemon index.ts"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "bcrypt": "^5.1.1",
+    "@types/bcrypt": "^5.0.1",
     "crypto": "^1.0.1",
     "http-status-codes": "^2.3.0",
     "jsonwebtoken": "^9.0.2",
