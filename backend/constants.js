@@ -1,6 +1,6 @@
 const constants = {
   DB_CONNECTION_STRING:
-    "mongodb+srv://test:test123@cluster0.qtltoug.mongodb.net/kanban_board?retryWrites=true&w=majority",
+    "f23be5541324c937cd137966f4aed303e1899abe8381f3dc6c2f615b436de67835534cbedef29ee1489b6dcdc94a0c0da208392b4b6140fce1d759862c18a453c6407830b6bdb7ac5c78979c0b1ab7825370d043dca5ee1b0cdbe324a4fa38b295ae24c620cac88aafc274fae142111b",
 };
 
 module.exports.constants = constants;

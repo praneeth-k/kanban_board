@@ -1,6 +1,7 @@
 const { StatusCodes } = require("http-status-codes");
 const { getUserFromDB } = require("../../util");
 const bcrypt = require("bcrypt");
+const crypto = require("crypto");
 
 async function Login(req, res) {
   if (req.body.name && req.body.password) {
