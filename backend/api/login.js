@@ -1,5 +1,5 @@
 const { StatusCodes } = require("http-status-codes");
-const { getUserFromDB } = require("../../util");
+const { getUserFromDB } = require("../util");
 const bcrypt = require("bcrypt");
 const crypto = require("crypto");
 

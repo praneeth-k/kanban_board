@@ -1,4 +1,4 @@
-const User = require("./backend/model/user");
+const User = require("./model/user");
 
 module.exports.getUserFromDB = async (username) => {
   const userFromDB = await User.findOne({}).where({ name: username });

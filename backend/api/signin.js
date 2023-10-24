@@ -1,4 +1,4 @@
-const { addUserToDB } = require("../../util");
+const { addUserToDB } = require("../util");
 const bcrypt = require("bcrypt");
 const { StatusCodes } = require("http-status-codes");
 
