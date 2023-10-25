@@ -1,10 +1,10 @@
 import { Router } from "express";
 import { ConnectToDBApi } from "../db_connection";
 
-const router = Router();
+const dbRouter = Router();
 
-router.post("/connect", (req: any, res: any) => {
+dbRouter.post("/connect", (req: any, res: any) => {
   ConnectToDBApi(req, res);
 });
 
-export default router;
+export default dbRouter;

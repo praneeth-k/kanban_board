@@ -1,25 +1,25 @@
-const { Router } = require("express");
-const { default: LoginApi } = require("../api/auth/login");
-const { default: ResetPasswordApi } = require("../api/auth/reset_password");
-const { default: SigninApi } = require("../api/auth/signin");
-const { default: DeleteUserApi } = require("../api/auth/delete_user");
+import { Router } from "express";
+import LoginApi from "../api/auth/login";
+import ResetPasswordApi from "../api/auth/reset_password";
+import SigninApi from "../api/auth/signin";
+import DeleteUserApi from "../api/auth/delete_user";
 
-const router = Router();
+const authRouter = Router();
 
-router.post("/login", (req: any, res: any) => {
+authRouter.post("/login", (req: any, res: any) => {
   LoginApi(req, res);
 });
 
-router.post("/reset_password", (req: any, res: any) => {
+authRouter.post("/reset_password", (req: any, res: any) => {
   ResetPasswordApi(req, res);
 });
 
-router.post("/signin", (req: any, res: any) => {
+authRouter.post("/signin", (req: any, res: any) => {
   SigninApi(req, res);
 });
 
-router.post("/delete_user", (req: any, res: any) => {
+authRouter.post("/delete_user", (req: any, res: any) => {
   DeleteUserApi(req, res);
 });
 
-export default router;
+export default authRouter;

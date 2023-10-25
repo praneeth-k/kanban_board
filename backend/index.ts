@@ -1,8 +1,9 @@
 import express from "express";
 import { StatusCodes } from "http-status-codes";
 import { IsDBConnected } from "./db_connection";
-import router from "./routes/auth";
+import authRouter from "./routes/auth";
 import dbRoutes from "./routes/db";
+import taskRouter from "./routes/task";
 
 const app = express();
 app.use(express.json());
@@ -26,8 +27,9 @@ app.use((req, res, next) => {
   }
 });
 
-app.use("/auth", router);
+app.use("/auth", authRouter);
 app.use("/db", dbRoutes);
+app.use("/task", taskRouter);
 
 app.listen(3001, () => {
   console.log("Server listening on port 3001");
