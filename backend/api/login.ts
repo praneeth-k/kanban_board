@@ -1,10 +1,13 @@
 import StatusCodes from "http-status-codes";
 import { getUserFromDB } from "../util";
-import bcrypt from 'bcrypt';
+import bcrypt from "bcrypt";
 import { Request, Response } from "express-serve-static-core";
 import { ParsedQs } from "qs";
 
-async function Login(req: Request<{}, any, any, ParsedQs, Record<string, any>>, res: Response<any, Record<string, any>, number>) {
+async function LoginApi(
+  req: Request<{}, any, any, ParsedQs, Record<string, any>>,
+  res: Response<any, Record<string, any>, number>
+) {
   if (req.body.name && req.body.password) {
     const userFromDB = await getUserFromDB(req.body.name);
     if (userFromDB && userFromDB.name && userFromDB.password) {
@@ -29,4 +32,4 @@ async function Login(req: Request<{}, any, any, ParsedQs, Record<string, any>>, 
   }
 }
 
-export default Login;
+export default LoginApi;

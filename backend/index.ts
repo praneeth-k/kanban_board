@@ -1,8 +1,10 @@
-import express from 'express';
-import { StatusCodes } from 'http-status-codes';
-import Login from './api/login';
-import Signin from './api/signin';
-import { ConnectToDB, IsDBConnected } from './dbConnection';
+import express from "express";
+import { StatusCodes } from "http-status-codes";
+import LoginApi from "./api/login";
+import SigninApi from "./api/signin";
+import { ConnectToDBApi, IsDBConnected } from "./dbConnection";
+import DeleteUserApi from "./api/delete_user";
+import ResetPasswordApi from "./api/reset_password";
 
 const app = express();
 app.use(express.json());
@@ -26,15 +28,23 @@ app.use((req, res, next) => {
 });
 
 app.post("/connect_to_db", function (req, res) {
-    ConnectToDB(req, res);
-  });
+  ConnectToDBApi(req, res);
+});
 
 app.post("/login", (req, res) => {
-  Login(req, res);
+  LoginApi(req, res);
+});
+
+app.post("/reset_password", (req, res) => {
+  ResetPasswordApi(req, res);
 });
 
 app.post("/signin", (req, res) => {
-  Signin(req, res);
+  SigninApi(req, res);
+});
+
+app.post("/delete_user", (req, res) => {
+  DeleteUserApi(req, res);
 });
 
 app.listen(3001, () => {
