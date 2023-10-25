@@ -1,33 +1,30 @@
 import { Request, Response } from "express-serve-static-core";
 import { ParsedQs } from "qs";
-import { addUserToDB } from "../util";
+import { deleteUser } from "../../util";
 import { StatusCodes } from "http-status-codes";
-import { ReturnType } from "../constants";
+import { ReturnType } from "../../constants";
 
-async function SigninApi(
+async function DeleteUserApi(
   req: Request<{}, any, any, ParsedQs, Record<string, any>>,
   res: Response<any, Record<string, any>, number>
 ) {
   try {
     if (req.body && req.body.name && req.body.password) {
-      const queryStatus: { ret: ReturnType; msg: string } = await addUserToDB({
+      const queryStatus: ReturnType = await deleteUser({
         name: req.body.name,
         password: req.body.password,
       });
-      if (
-        (queryStatus.ret as ReturnType) === (ReturnType.SUCCESS as ReturnType)
-      ) {
+      if ((queryStatus as ReturnType) === (ReturnType.SUCCESS as ReturnType)) {
         res.statusCode = StatusCodes.OK;
-        res.send({ msg: "User Created Successfylly!! Please Login" });
+        res.send({ msg: "User deleted!!" });
       } else if (
-        (queryStatus.ret as ReturnType) ===
-        (ReturnType.VALIDATION_ERROR as ReturnType)
+        (queryStatus as ReturnType) === (ReturnType.NOT_FOUND as ReturnType)
       ) {
-        res.statusCode = StatusCodes.BAD_REQUEST;
-        res.send({ msg: queryStatus.msg });
+        res.statusCode = StatusCodes.NOT_FOUND;
+        res.send({ msg: "User not found" });
       } else {
-        res.statusCode == StatusCodes.CONFLICT;
-        res.send({ msg: "User already exist" });
+        res.statusCode == StatusCodes.INTERNAL_SERVER_ERROR;
+        res.send({ msg: "Internal server error" });
       }
     } else {
       res.statusCode = StatusCodes.BAD_REQUEST;
@@ -40,4 +37,4 @@ async function SigninApi(
   }
 }
 
-export default SigninApi;
+export default DeleteUserApi;

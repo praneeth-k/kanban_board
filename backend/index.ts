@@ -1,10 +1,8 @@
 import express from "express";
 import { StatusCodes } from "http-status-codes";
-import LoginApi from "./api/login";
-import SigninApi from "./api/signin";
-import { ConnectToDBApi, IsDBConnected } from "./dbConnection";
-import DeleteUserApi from "./api/delete_user";
-import ResetPasswordApi from "./api/reset_password";
+import { IsDBConnected } from "./db_connection";
+import router from "./routes/auth";
+import dbRoutes from "./routes/db";
 
 const app = express();
 app.use(express.json());
@@ -13,8 +11,9 @@ app.use((req, res, next) => {
   next();
 });
 
+//check DB Connection
 app.use((req, res, next) => {
-  const excludePaths = ["/connect_to_db"];
+  const excludePaths = ["/db/connect"];
   if (excludePaths.includes(req.path)) {
     next();
   } else {
@@ -27,25 +26,8 @@ app.use((req, res, next) => {
   }
 });
 
-app.post("/connect_to_db", function (req, res) {
-  ConnectToDBApi(req, res);
-});
-
-app.post("/login", (req, res) => {
-  LoginApi(req, res);
-});
-
-app.post("/reset_password", (req, res) => {
-  ResetPasswordApi(req, res);
-});
-
-app.post("/signin", (req, res) => {
-  SigninApi(req, res);
-});
-
-app.post("/delete_user", (req, res) => {
-  DeleteUserApi(req, res);
-});
+app.use("/auth", router);
+app.use("/db", dbRoutes);
 
 app.listen(3001, () => {
   console.log("Server listening on port 3001");

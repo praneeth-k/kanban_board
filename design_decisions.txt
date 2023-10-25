@@ -1,0 +1,16 @@
+I have 2 schema design considerations for this performance. Because of advantages in 1st method, I choose to go with this kind of implementation.
+
+1. Refer user id on task:
+	I have to add cur user Id to each new task
+	Read tasks using taskId as search key
+	Advantages:
+		1 Write operation required for each new 
+		Read performance can be improved by indexing using UserId on Task doc
+	
+
+2. Refer task id on user:
+	I have to add each new task Id to cur user
+	Read tasks using userId as search key
+	
+	Dis-Advantages
+		(2 write operations)I world have to write to both to user and task doc for each new task created

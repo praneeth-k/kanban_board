@@ -1,5 +1,5 @@
 import StatusCodes from "http-status-codes";
-import { getUserFromDB } from "../util";
+import { getUserFromDB } from "../../util";
 import bcrypt from "bcrypt";
 import { Request, Response } from "express-serve-static-core";
 import { ParsedQs } from "qs";
