@@ -17,7 +17,7 @@ const taskSchema = new mongoose.Schema(
       enum: ["New", "InProgress", "Completed"],
       default: "New",
     },
-    User: { type: mongoose.Schema.ObjectId, ref: "User" },
+    UserId: { type: mongoose.Schema.ObjectId, ref: "User", index: true },
   },
   { timestamps: true }
 );
