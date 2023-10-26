@@ -1,38 +1,43 @@
 import mongoose from "mongoose";
 import { StatusCodes } from "http-status-codes";
-import * as crypto from "crypto";
-import { Constants } from "./constants";
-import { Request, Response } from "express-serve-static-core";
-import { ParsedQs } from "qs";
-import { decrypt, encrypt } from "./util";
+import { decrypt } from "./util";
+import "dotenv/config";
 
-async function ConnectToDBApi(
-  req: Request<{}, any, any, ParsedQs, Record<string, any>>,
-  res: Response<any, Record<string, any>, number>
-) {
+async function ConnectToDBApi(req: any, res: any, next: any) {
   let ret = true;
   try {
-    const decryptedConnectionStr = decrypt(
-      Constants.DB_CONNECTION_STRING,
-      req.body.key,
-      req.body.algorithm
-    );
+    if (
+      process.env.DB_CONNECTION_STRING &&
+      process.env.SECRET_KEY &&
+      process.env.ALGORITHM
+    ) {
+      const decryptedConnectionStr = decrypt(
+        process.env.DB_CONNECTION_STRING,
+        process.env.SECRET_KEY,
+        process.env.ALGORITHM
+      );
 
-    await mongoose
-      .connect(decryptedConnectionStr)
-      .catch((error) => {
-        console.log("Error connecting to db: " + error);
-        res
-          .status(StatusCodes.INTERNAL_SERVER_ERROR)
-          .send({ msg: "DB Connection failed" });
-        ret = false;
-      })
-      .then(() => {
-        if (ret) {
-          console.log("DB Connected Successfully!!");
-          res.status(StatusCodes.OK).send({ msg: "DB Connection successful" });
-        }
-      });
+      await mongoose
+        .connect(decryptedConnectionStr)
+        .catch((error) => {
+          console.log("Error connecting to db: " + error);
+          res
+            .status(StatusCodes.INTERNAL_SERVER_ERROR)
+            .send({ msg: "DB Connection failed" });
+          ret = false;
+        })
+        .then(() => {
+          if (ret) {
+            console.log("DB Connected Successfully!!");
+            next();
+          }
+        });
+    } else {
+      console.log("Connection strin not found");
+      res
+        .status(StatusCodes.INTERNAL_SERVER_ERROR)
+        .send({ msg: "Environment keys not found" });
+    }
   } catch (error) {
     console.log("Error connecting to db:" + error);
     res

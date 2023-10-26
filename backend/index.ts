@@ -1,6 +1,6 @@
 import express from "express";
 import { StatusCodes } from "http-status-codes";
-import { IsDBConnected } from "./db_connection";
+import { ConnectToDBApi, IsDBConnected } from "./db_connection";
 import authRouter from "./routes/auth";
 import dbRoutes from "./routes/db";
 import taskRouter from "./routes/task";
@@ -20,15 +20,13 @@ app.use((req, res, next) => {
   } else {
     if (IsDBConnected()) return next();
     else {
-      return res
-        .status(StatusCodes.INTERNAL_SERVER_ERROR)
-        .send({ msg: "DB NOT CONNECTED" });
+      ConnectToDBApi(req, res, next);
     }
   }
 });
 
 app.use("/auth", authRouter);
-app.use("/db", dbRoutes);
+// app.use("/db", dbRoutes);
 app.use("/task", taskRouter);
 
 app.listen(3001, () => {

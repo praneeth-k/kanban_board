@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 import { ReturnType } from "./constants";
 import * as crypto from "crypto";
 
-export function encrypt(text: string, key: string, algorithm: string) {
+export const encrypt = (text: string, key: string, algorithm: string) => {
   const iv = Buffer.from("iv-10-iviv-19-iv");
   key = crypto
     .createHash("sha256")
@@ -16,9 +16,13 @@ export function encrypt(text: string, key: string, algorithm: string) {
   encrypted = Buffer.concat([encrypted, cipher.final()]);
 
   return { iv: iv.toString("hex"), encryptedData: encrypted.toString("hex") };
-}
+};
 
-export function decrypt(encryptedData: string, key: string, algorithm: string) {
+export const decrypt = (
+  encryptedData: string,
+  key: string,
+  algorithm: string
+) => {
   const iv = Buffer.from("iv-10-iviv-19-iv");
   key = crypto
     .createHash("sha256")
@@ -33,4 +37,9 @@ export function decrypt(encryptedData: string, key: string, algorithm: string) {
   decrypted = Buffer.concat([decrypted, decipher.final()]);
 
   return decrypted.toString();
-}
+};
+
+export const ObjectFilter = (obj: any, predicate: any) =>
+  Object.keys(obj)
+    .filter((key) => predicate(key))
+    .reduce((res: any, key) => ((res[key] = obj[key]), res), {});
