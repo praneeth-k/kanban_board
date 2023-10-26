@@ -1,8 +1,37 @@
 import { Request, Response } from "express-serve-static-core";
 import { ParsedQs } from "qs";
-import { addUserToDB } from "../../util";
 import { StatusCodes } from "http-status-codes";
 import { ReturnType } from "../../constants";
+import User from "../../model/user";
+import mongoose from "mongoose";
+
+const addUserToDB = async (user: { name: string; password: string }) => {
+  let ret = ReturnType.SUCCESS;
+  let msg = "";
+  try {
+    const userFromDB = await User.findOne({}).where({ name: user.name });
+    if (userFromDB) {
+      ret = ReturnType.FAIL;
+    } else {
+      await User.create({
+        name: user.name,
+        password: "" + user.password,
+      }).catch((err) => {
+        console.log(err);
+        if (err instanceof mongoose.Error.ValidationError) {
+          msg = err.message;
+          ret = ReturnType.VALIDATION_ERROR;
+        } else {
+          ret = ReturnType.FAIL;
+        }
+      });
+    }
+  } catch (error) {
+    console.log(error);
+    ret = ReturnType.FAIL;
+  }
+  return { ret: ret, msg: msg };
+};
 
 async function SigninApi(
   req: Request<{}, any, any, ParsedQs, Record<string, any>>,

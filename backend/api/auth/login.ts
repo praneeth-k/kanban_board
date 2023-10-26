@@ -1,15 +1,15 @@
 import StatusCodes from "http-status-codes";
-import { getUserFromDB } from "../../util";
 import bcrypt from "bcrypt";
 import { Request, Response } from "express-serve-static-core";
 import { ParsedQs } from "qs";
+import User from "../../model/user";
 
 async function LoginApi(
   req: Request<{}, any, any, ParsedQs, Record<string, any>>,
   res: Response<any, Record<string, any>, number>
 ) {
   if (req.body.name && req.body.password) {
-    const userFromDB = await getUserFromDB(req.body.name);
+    const userFromDB = await User.findOne({}).where({ name: req.body.name });
     if (userFromDB && userFromDB.name && userFromDB.password) {
       const passwordMatch = await bcrypt.compare(
         req.body.password,

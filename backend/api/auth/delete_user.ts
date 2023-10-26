@@ -1,19 +1,26 @@
 import { Request, Response } from "express-serve-static-core";
 import { ParsedQs } from "qs";
-import { deleteUser } from "../../util";
 import { StatusCodes } from "http-status-codes";
 import { ReturnType } from "../../constants";
+import User from "../../model/user";
 
 async function DeleteUserApi(
   req: Request<{}, any, any, ParsedQs, Record<string, any>>,
   res: Response<any, Record<string, any>, number>
 ) {
   try {
-    if (req.body && req.body.name && req.body.password) {
-      const queryStatus: ReturnType = await deleteUser({
-        name: req.body.name,
-        password: req.body.password,
-      });
+    const [username, password] = req.body;
+    let queryStatus = ReturnType.SUCCESS;
+    if (username && password) {
+      const userFromDB = await User.findOne({}).where({ name: username });
+      if (userFromDB) {
+        await User.deleteOne({ name: username }).catch((error) => {
+          console.log(error);
+          queryStatus = ReturnType.FAIL;
+        });
+      } else {
+        queryStatus = ReturnType.NOT_FOUND;
+      }
       if ((queryStatus as ReturnType) === (ReturnType.SUCCESS as ReturnType)) {
         res.statusCode = StatusCodes.OK;
         res.send({ msg: "User deleted!!" });

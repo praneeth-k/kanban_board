@@ -12,12 +12,12 @@ const taskSchema = new mongoose.Schema(
       type: String,
       max: [15, "Task title cannot have more than 50 characters"],
     },
-    Status: {
+    status: {
       type: String,
       enum: ["New", "InProgress", "Completed"],
       default: "New",
     },
-    UserId: { type: mongoose.Schema.ObjectId, ref: "User", index: true },
+    userId: { type: mongoose.Schema.ObjectId, ref: "User", index: true },
   },
   { timestamps: true }
 );
