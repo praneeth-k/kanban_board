@@ -79,7 +79,11 @@ const getTaskDetails = async (req: any, res: any) => {
         }
       );
       if ((queryStatus as ReturnType) == ReturnType.SUCCESS) {
-        res.status(StatusCodes.OK).send({ task: task });
+        if (task) {
+          res.status(StatusCodes.OK).send({ task: task });
+        } else {
+          res.status(StatusCodes.NOT_FOUND).send({ msg: "Task not found!!" });
+        }
       }
     } else {
       res.status(StatusCodes.BAD_REQUEST).send({ msg: "Bad request" });
@@ -128,6 +132,8 @@ const updateTask = async (req: any, res: any) => {
               .status(StatusCodes.OK)
               .send({ msg: "Task Updated Successfully!!" });
           }
+        } else {
+          res.status(StatusCodes.NOT_FOUND).send({ msg: "Task not found!!" });
         }
       }
     } else {
