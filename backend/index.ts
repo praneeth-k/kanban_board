@@ -1,12 +1,16 @@
 import express from "express";
-import { StatusCodes } from "http-status-codes";
 import { ConnectToDBApi, IsDBConnected } from "./db_connection";
 import authRouter from "./routes/auth";
-import dbRoutes from "./routes/db";
 import taskRouter from "./routes/task";
+import cors from "cors";
 
 const app = express();
 app.use(express.json());
+var corsOptions = {
+  origin: "*",
+  optionsSuccessStatus: 200,
+};
+app.use(cors(corsOptions));
 app.use((req, res, next) => {
   console.log(`Method: ${req.method}, Path: ${req.path}`);
   next();
@@ -26,7 +30,6 @@ app.use((req, res, next) => {
 });
 
 app.use("/auth", authRouter);
-// app.use("/db", dbRoutes);
 app.use("/task", taskRouter);
 
 app.listen(3001, () => {

@@ -10,12 +10,12 @@ import {
 const taskRouter = Router();
 
 //get all tasks related to user
-taskRouter.get("/all", (req: any, res: any) => {
+taskRouter.post("/all", (req: any, res: any) => {
   getAllTasks(req, res);
 });
 
 //get single task based on task id
-taskRouter.get("/details", (req: any, res: any) => {
+taskRouter.post("/details", (req: any, res: any) => {
   getTaskDetails(req, res);
 });
 
@@ -30,7 +30,7 @@ taskRouter.put("/update", (req: any, res: any) => {
 });
 
 //get all tasks related to user
-taskRouter.delete("/delete", (req: any, res: any) => {
+taskRouter.post("/delete", (req: any, res: any) => {
   deleteTask(req, res);
 });
 

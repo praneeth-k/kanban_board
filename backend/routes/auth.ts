@@ -1,6 +1,6 @@
 import { Router } from "express";
 import LoginApi from "../api/auth/login";
-import ResetPasswordApi from "../api/auth/reset_password";
+import ChangePasswordApi from "../api/auth/change_password";
 import SigninApi from "../api/auth/signin";
 import DeleteUserApi from "../api/auth/delete_user";
 
@@ -10,8 +10,8 @@ authRouter.post("/login", (req: any, res: any) => {
   LoginApi(req, res);
 });
 
-authRouter.post("/reset_password", (req: any, res: any) => {
-  ResetPasswordApi(req, res);
+authRouter.post("/change_password", (req: any, res: any) => {
+  ChangePasswordApi(req, res);
 });
 
 authRouter.post("/signin", (req: any, res: any) => {

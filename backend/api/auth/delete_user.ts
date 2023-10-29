@@ -3,21 +3,32 @@ import { ParsedQs } from "qs";
 import { StatusCodes } from "http-status-codes";
 import { ReturnType } from "../../constants";
 import User from "../../model/user";
+import * as jwt from "jsonwebtoken";
 
 async function DeleteUserApi(
   req: Request<{}, any, any, ParsedQs, Record<string, any>>,
   res: Response<any, Record<string, any>, number>
 ) {
   try {
-    const [username, password] = req.body;
+    const token = req.body.token;
     let queryStatus = ReturnType.SUCCESS;
-    if (username && password) {
-      const userFromDB = await User.findOne({}).where({ name: username });
-      if (userFromDB) {
-        await User.deleteOne({ name: username }).catch((error) => {
-          console.log(error);
-          queryStatus = ReturnType.FAIL;
-        });
+    if (token && process.env.SECRET_KEY) {
+      const verifiedUser: any = jwt.verify(
+        req.body.token,
+        process.env.SECRET_KEY
+      );
+      if (verifiedUser?.id) {
+        await User.deleteOne({ _id: verifiedUser.id })
+          .catch((error) => {
+            console.log(error);
+            queryStatus = ReturnType.FAIL;
+          })
+          .then((res: any) => {
+            if (res.deletedCount <= 0) {
+              queryStatus = ReturnType.FAIL;
+              console.log(res);
+            }
+          });
       } else {
         queryStatus = ReturnType.NOT_FOUND;
       }
@@ -39,8 +50,15 @@ async function DeleteUserApi(
     }
   } catch (error) {
     console.log(error);
-    res.statusCode = StatusCodes.INTERNAL_SERVER_ERROR;
-    res.send({ msg: "Internal server Error" });
+    if (error instanceof jwt.TokenExpiredError) {
+      res
+        .status(StatusCodes.UNAUTHORIZED)
+        .send({ msg: "Session Expired!! Please login again" });
+    } else {
+      res
+        .status(StatusCodes.INTERNAL_SERVER_ERROR)
+        .send({ msg: "Internal Server Error" });
+    }
   }
 }
 

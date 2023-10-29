@@ -1,4 +1,4 @@
-import { StatusCodes, UNAUTHORIZED } from "http-status-codes";
+import { StatusCodes } from "http-status-codes";
 import { ReturnType } from "../../constants";
 import Task from "../../model/task";
 import mongoose from "mongoose";
@@ -33,7 +33,7 @@ const getAllTasks = async (req: any, res: any) => {
         );
       }
       if ((queryStatus as ReturnType) == ReturnType.SUCCESS) {
-        res.status(StatusCodes.OK).send({ tasks: allTasks });
+        res.status(StatusCodes.OK).send({ taskList: allTasks });
       }
     } else {
       res.status(StatusCodes.BAD_REQUEST).send({ msg: "Bad request" });
@@ -54,7 +54,7 @@ const getAllTasks = async (req: any, res: any) => {
 
 const createTask = async (req: any, res: any) => {
   try {
-    const { title, desc, status, token } = req.body;
+    const { title, desc: descreption, status, token } = req.body;
     let errorOccured = false;
     if (title && token && process.env.SECRET_KEY) {
       const verifiedUser: any = jwt.verify(
@@ -63,7 +63,7 @@ const createTask = async (req: any, res: any) => {
       );
       await Task.create({
         title: title,
-        desc: desc,
+        desc: descreption,
         status: status,
         userId: verifiedUser.id,
       }).catch((error) => {
@@ -177,7 +177,7 @@ const updateTask = async (req: any, res: any) => {
                 task[key] = req.body.task[key];
               }
             });
-            task.save().catch((error: any) => {
+            await task.save().catch((error: any) => {
               errorOccured = true;
               console.log(error);
               res

@@ -1,0 +1,37 @@
+.nav {
+  background-color: #1877f2;
+  color: aliceblue;
+  padding-top: 3vh;
+  padding-bottom: 3vh;
+  padding-left: 6vw;
+  padding-right: 6vw;
+}
+.nav-title {
+  color: aliceblue;
+  text-transform: uppercase;
+  letter-spacing: 2.5px;
+  font-size: 1.5rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+.nav-logo {
+  max-width: 50px;
+  max-height: 50px;
+}
+.nav-menu {
+  text-transform: capitalize;
+  font-size: 1rem;
+  gap: 1rem;
+}
+a {
+  text-decoration: none;
+}
+.nav-item {
+  color: aliceblue;
+}
+.nav-item:active {
+  color: aliceblue;
+}
+.nav-item:hover {
+  cursor: pointer;
+}

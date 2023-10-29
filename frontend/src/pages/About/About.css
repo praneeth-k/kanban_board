@@ -1,0 +1,30 @@
+.about-page {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.about-container {
+  background-color: #fff;
+  padding: 1rem;
+  border-radius: 5px;
+  max-width: min(90%, 700px);
+}
+.title {
+  text-align: center;
+}
+.about-dev {
+  color: #779;
+  font-weight: 500;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  align-items: end;
+}
+.about-dev * {
+  flex-grow: 0;
+  width: fit-content;
+  color: #1877f2;
+}

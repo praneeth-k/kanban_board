@@ -6,6 +6,10 @@ import "dotenv/config";
 async function ConnectToDBApi(req: any, res: any, next: any) {
   let ret = true;
   try {
+    if (IsDBConnected()) {
+      console.log("DB already connected");
+      return;
+    }
     if (
       process.env.DB_CONNECTION_STRING &&
       process.env.SECRET_KEY &&
